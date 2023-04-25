@@ -10,10 +10,24 @@ import java.io.IOException;
 @WebServlet(name="HandleComputer", urlPatterns={"/HandleComputer"})
 public class HandleComputer extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String number1String = request.getParameter("operand1");
+        String number2String = request.getParameter("operand2");
+        String operatorString = request.getParameter("operator");
+
+        // 输入验证
+        if (number1String == null || number1String.trim().isEmpty() ||
+                number2String == null || number2String.trim().isEmpty() ||
+                operatorString == null || operatorString.trim().isEmpty()) {
+            request.setAttribute("errorMessage", "请输入正确的数值和运算符");
+            request.getRequestDispatcher("/inputNumber.jsp").forward(request, response);
+            return;
+        }
+
         // 获取用户输入的操作数和运算符
         int operand1 = Integer.parseInt(request.getParameter("operand1"));
         int operand2 = Integer.parseInt(request.getParameter("operand2"));
         String operator = request.getParameter("operator");
+        
 
         // 将用户输入的数据存入实体模型中
         Com.Computer computer = new Com.Computer();
